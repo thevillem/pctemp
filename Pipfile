@@ -5,6 +5,10 @@ verify_ssl = true
 
 [dev-packages]
 pylint = "*"
+black = "*"
+flake8 = "*"
+isort = "*"
+pre-commit = "*"
 
 [packages]
 altair = "*"
@@ -16,3 +20,6 @@ requests = "*"
 
 [requires]
 python_version = "3.7"
+
+[pipenv]
+allow_prereleases = true
