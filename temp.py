@@ -5,12 +5,22 @@ import json
 import datetime
 import requests
 
+# TODO:
+# 1. Command line parameter for sending data.
+# 2. Changing send_temp to send_msg ?
+# 2a. Add timestamp to JSON data before sending.
 
-def main():
 
+def send_temp(stats_list):
+
+    for stat in stats_list:
+        requests.post("TBD", json=stat)
+
+
+def get_temp():
     w = wmi.WMI(namespace="OpenHardwareMonitor")
     temperature_infos = w.Sensor()
-    sensor_list = []
+    stats_list = []
     for sensor in temperature_infos:
         json_data = {
                     "time" : str(datetime.datetime.utcnow().isoformat()),
@@ -22,9 +32,19 @@ def main():
                     "Min" : sensor.Min
                 }
         json_data = json.dumps(json_data)
-        print(json.dumps(json_data, indent=4, sort_keys=True))
-        sensor_list.append(json_data)
+        stats_list.append(json_data)
 
+    return stats_list
+
+
+def main():
+
+    c = wmi.WMI()
+    if c.Win32_Process(name="OpenHardwareMonitor.exe"):
+        print("OpenHardwareMonitor is running!")
+    else:
+        print("OpenHardwareMonitor is not running, exiting.")
+        
 
 if __name__ == '__main__':
     main()
